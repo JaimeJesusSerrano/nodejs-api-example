@@ -1,11 +1,11 @@
 import crypto from 'crypto'
 
 import db from '../config/sqlite3'
-import IExerciseModel from '../../types/ExerciseModel'
-import { ExerciseToCreate as IExerciseToCreate } from '../../types/Exercise'
-import IExerciseJoinUserModel from '../../types/ExerciseJoinUserModel'
+import IRepositoryExercise from '../../types/repositories/Exercise'
+import { ExerciseToCreate as IApiExerciseToCreate } from '../../types/api/Exercise'
+import IExerciseJoinUser from '../../types/ExerciseJoinUser'
 
-export const create = async (data: IExerciseToCreate): Promise<boolean> => {
+export const create = async (data: IApiExerciseToCreate): Promise<boolean> => {
   const sql = `INSERT INTO exercise(id, user_id, content, created_at) VALUES("${crypto.randomUUID()}", "${data.user_id}", "${data.content}", "${new Date()}")`
 
   return new Promise((resolve, reject) => {
@@ -23,11 +23,11 @@ export const create = async (data: IExerciseToCreate): Promise<boolean> => {
   })
 }
 
-export const getAll = async (): Promise<IExerciseModel[]> => {
+export const getAll = async (): Promise<IRepositoryExercise[]> => {
   const sql = 'select * from exercise'
 
   return new Promise((resolve, reject) => {
-    db.all(sql, [], (e, rows: IExerciseModel[]) => {
+    db.all(sql, [], (e, rows: IRepositoryExercise[]) => {
       if (e) {
         console.error(e)
         reject(e)
@@ -38,11 +38,11 @@ export const getAll = async (): Promise<IExerciseModel[]> => {
   })
 }
 
-export const getAllJoinUser = async (): Promise<IExerciseJoinUserModel[]> => {
+export const getAllJoinUser = async (): Promise<IExerciseJoinUser[]> => {
   const sql = 'SELECT * FROM exercise JOIN user ON exercise.user_id = user.id'
 
   return new Promise((resolve, reject) => {
-    db.all(sql, [], (e, rows: IExerciseJoinUserModel[]) => {
+    db.all(sql, [], (e, rows: IExerciseJoinUser[]) => {
       if (e) {
         console.error(e)
         reject(e)

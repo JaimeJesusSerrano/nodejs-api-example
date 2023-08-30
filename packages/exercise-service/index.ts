@@ -24,6 +24,6 @@ app.use(express.json())
 // Routes
 app.use(exercisesApi)
 
-app.listen(port, domain, () => {
+export default app.listen(port, domain, () => {
   console.log(`Server running at http://${domain}:${port}/`)
 })

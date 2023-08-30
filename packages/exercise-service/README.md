@@ -15,3 +15,4 @@ Executing the next command:
 - Dockerize
 - Enable sqlite foreign keys
 - Add repository data validator
+- Handle service errors with throw and 400

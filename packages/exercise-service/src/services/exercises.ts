@@ -1,9 +1,9 @@
 import exerciseRepository from '../repositories/Exercise'
-import IExercise, { ExerciseToCreate as IExerciseToCreate } from '../../types/Exercise'
+import IApiExercise, { ExerciseToCreate as IApiExerciseToCreate } from '../../types/api/Exercise'
 
 const MAX_EXERCISES_PER_USER = 10
 
-export const create = async (data: IExerciseToCreate): Promise<boolean | null> => {
+export const create = async (data: IApiExerciseToCreate): Promise<boolean | null> => {
   try {
     if (await isNewExerciseValid(data)) {
       return exerciseRepository.create(data)
@@ -14,7 +14,7 @@ export const create = async (data: IExerciseToCreate): Promise<boolean | null> =
   }
 }
 
-export const getAll = async (): Promise<IExercise[]> => {
+export const getAll = async (): Promise<IApiExercise[]> => {
   try {
     const exercisesJoinUser = await exerciseRepository.getAllJoinUser()
 
@@ -34,7 +34,7 @@ export const getAll = async (): Promise<IExercise[]> => {
   }
 }
 
-const isNewExerciseValid = async (data: IExerciseToCreate) => {
+const isNewExerciseValid = async (data: IApiExerciseToCreate) => {
   const exercises = await exerciseRepository.getAll()
 
   const userExercises = exercises.map((exercise => exercise.user_id === data.user_id))

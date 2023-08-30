@@ -12,7 +12,7 @@ export const create = async (req: Request, res: Response) => {
 
   const result = postExercisesValidatorSchema.validate(dataToValidate)
   if (result.error) {
-    return res.send(result.error.message)
+    return res.status(400).send(result.error.message)
   }
 
   res.send(await exercisesService.create(result.value))

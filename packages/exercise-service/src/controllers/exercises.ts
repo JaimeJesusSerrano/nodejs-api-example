@@ -4,7 +4,13 @@ import postExercisesValidatorSchema from '../validators/postExercises'
 import exercisesService from '../services/exercises'
 
 export const getAll = async (req: Request, res: Response) => {
-  res.send(await exercisesService.getAll())
+  try {
+    res.send(await exercisesService.getAll())
+  } catch (e) {
+    return res.status(500).send({
+      error: 'There is was an error',
+    })
+  }
 }
 
 export const create = async (req: Request, res: Response) => {
@@ -12,10 +18,25 @@ export const create = async (req: Request, res: Response) => {
 
   const result = postExercisesValidatorSchema.validate(dataToValidate)
   if (result.error) {
-    return res.status(400).send(result.error.message)
+    return res.status(400).send({
+      error: result.error.message,
+    })
   }
 
-  res.send(await exercisesService.create(result.value))
+  try {
+    const newExercise = await exercisesService.create(result.value)
+    
+    if (!newExercise) {
+      return res.status(400).send({
+        error: 'There is was an error',
+      })
+    }
+    res.send(newExercise)
+  } catch (e) {
+    return res.status(500).send({
+      error: 'There is was an error',
+    })
+  }
 }
 
 export default { create, getAll }
